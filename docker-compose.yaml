@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  agents-postgres:
+    image: defogai/agents-postgres:latest
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    volumes:
+      - agents-postgres:/var/lib/postgresql/data
+    networks:
+      - agents-network
+
+  agents-python-server:
+    image: defogai/agents-python-server:latest
+    environment:
+      - DEFOG_API_KEY=${DEFOG_API_KEY}
+      - DEFOG_API_KEY_NAMES=${DEFOG_API_KEY_NAMES}
+      - DEFOG_BASE_URL=${DEFOG_BASE_URL:-https://api.defog.ai}
+      - DEFOG_GENERATE_URL=${DEFOG_GENERATE_URL:-https://api.defog.ai/generate_query_chat}
+      - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}
+      - ANALYSIS_ASSETS_DIR=${ANALYSIS_ASSETS_DIR}
+      - DBNAME=${DBNAME}
+      - DBHOST=${DBHOST}
+      - DBPORT=${DBPORT}
+      - DATABASE=${DATABASE}
+      - DBUSER=${DBUSER}
+      - DBPASSWORD=${DBPASSWORD}
+      - REDIS_INTERNAL_PORT=${REDIS_INTERNAL_PORT}
+      - PYTHONUNBUFFERED=${PYTHONUNBUFFERED}
+      - LLM_CALLS_URL=${LLM_CALLS_URL}
+      - PYTHONDONTWRITEBYTECODE=1
+      - PYTHONPATH=/backend
+      - INTERNAL_DB=${INTERNAL_DB:-postgres}
+      - LLM_SERVER_ENDPOINT=${LLM_SERVER_ENDPOINT}
+      - LLM_MODEL_NAME=${LLM_MODEL_NAME}
+    volumes:
+      - agents-assets:/agents-assets/
+    depends_on:
+      - agents-postgres
+      - agents-redis
+    networks:
+      - agents-network
+
+  agents-nginx:
+    image: defogai/agents-nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - agents-network
+    depends_on:
+      - agents-python-server
+
+  agents-redis:
+    image: redis:7-alpine
+    command: >
+      redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
+    volumes:
+      - agents-redis:/data
+    networks:
+      - agents-network
+
+volumes:
+  agents-postgres:
+  agents-assets:
+  agents-redis:
+
+networks:
+  agents-network:
