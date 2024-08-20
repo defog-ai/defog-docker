@@ -49,13 +49,15 @@ DEFOG_API_KEY_NAMES="Dataset 1,Dataset 2"
 To start Defog Docker, run the following command:
 
 ```bash
-docker-compose up
+docker compose up
 ```
 
-To stop Defog Docker, press `Ctrl+C` in the terminal where you ran the `docker-compose up` command.
+To stop Defog Docker, press `Ctrl+C` in the terminal where you ran the `docker compose up` command.
+
+You _might_ see an error the very first time you run `docker compose up`. If this happens, simply exit with `Ctrl+C`, and then run the command again.
 
 If you want to run Defog Docker in the background, you can run the following command:
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
