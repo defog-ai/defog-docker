@@ -16,15 +16,13 @@ cd defog-docker
 ```
 
 ### Obtaining your Defog API Key(s)
-If you do not have not yet gotten a Defog API Key, sign up at https://defog.ai/signup to get a free API key! The free key lets you query up to 5 tables with 25 total columns, and up to 1000 queries per month. If you need more queries, you can [upgrade to a paid plan](https://defog.ai/pricing).
+If you do not yet have a Defog API Key, sign up at https://defog.ai/signup to get a free one! The free key lets you query up to 5 tables with 25 total columns, and up to 1000 queries per month. If you want to query more complex databases, you can [upgrade to a paid plan](https://defog.ai/pricing).
 
 Once you have Docker and Docker Compose installed, you must update the `.env` file with your `DEFOG_API_KEY` and `DEFOG_API_KEY_NAMES`.
 
-The `DEFOG_API_KEY` is an API key that is associated with your metadata. It is used to authenticate your requests to the Defog API, and to inform Defog of table names and columns names present in your database. If you do not provide this variable, Defog will not be able to authenticate your requests.
-
 You can use multiple API keys by providing a comma-separated list of API keys. If you do so, then users will be able to select from multiple databases from a UI dropdown, like below
 
-[![Defog API Key Dropdown](./multiple-api-keys.png)
+![Defog API Key Dropdown](./multiple-api-keys.png)
 
 The `DEFOG_API_KEY_NAMES` is a comma-separated list of human readable API key names that you want to display to users. This is to ensure that end-users can easily select the correct API key when querying the database, without you having to expose the actual API key. These can be any string, but should be unique and easily identifiable.
 
