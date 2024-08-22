@@ -42,6 +42,20 @@ DEFOG_API_KEY_NAMES="Dataset 1,Dataset 2"
 ...
 ```
 
+## Updating Docker Installation
+
+```bash
+# this assumes that we are in the defog-docker folder
+# first, we remove the current image and volumes
+docker compose rm -f
+
+# then, we pull the latest updates from the docker hub
+docker compose pull
+
+# finally, we get the latest image up
+docker compose up
+```
+
 ## Running Defog Docker
 
 To start Defog Docker, run the following command:
