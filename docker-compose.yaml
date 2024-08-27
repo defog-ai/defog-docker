@@ -35,6 +35,11 @@ services:
       - INTERNAL_DB=${INTERNAL_DB:-postgres}
       - LLM_SERVER_ENDPOINT=${LLM_SERVER_ENDPOINT}
       - LLM_MODEL_NAME=${LLM_MODEL_NAME}
+      - EMAIL_OPTION=${EMAIL_OPTION:-DEFOG}
+      - RESEND_API_KEY=${RESEND_API_KEY}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
     volumes:
       - agents-assets:/agents-assets/
     depends_on:
