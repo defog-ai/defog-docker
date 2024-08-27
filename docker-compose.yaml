@@ -19,6 +19,7 @@ services:
       - DEFOG_API_KEY_NAMES=${DEFOG_API_KEY_NAMES}
       - DEFOG_BASE_URL=${DEFOG_BASE_URL:-https://api.defog.ai}
       - DEFOG_GENERATE_URL=${DEFOG_GENERATE_URL:-https://api.defog.ai/generate_query_chat}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
       - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}
       - ANALYSIS_ASSETS_DIR=${ANALYSIS_ASSETS_DIR}
       - DBNAME=${DEFOG_DBNAME:-postgres}
@@ -29,6 +30,7 @@ services:
       - DBPASSWORD=${DEFOG_DBPASSWORD:-postgres}
       - REDIS_INTERNAL_PORT=${REDIS_INTERNAL_PORT}
       - PYTHONUNBUFFERED=${PYTHONUNBUFFERED}
+      - LOG_LEVEL=${LOG_LEVEL:-info}
       - LLM_CALLS_URL=${LLM_CALLS_URL}
       - PYTHONDONTWRITEBYTECODE=1
       - PYTHONPATH=/backend
