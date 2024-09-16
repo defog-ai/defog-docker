@@ -12,22 +12,38 @@ services:
     networks:
       - agents-network
 
+  agents-rabbitmq:
+    image: rabbitmq:3-alpine
+    networks:
+      - agents-network
+    ports:
+      - "${RABBITMQ_PORT:-15672}:5672"
+    volumes:
+      - agents-rabbitmq:/var/lib/rabbitmq
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+
   agents-python-server:
     image: defogai/agents-python-server:latest
     environment:
-      - DEFOG_API_KEY=${DEFOG_API_KEY}
+      - DEFOG_API_KEY=${DEFOG_API_KEY} # for backwards compatibility. avoid using DEFOG_API_KEY going forward due to potential conflicts with usage in defog-python
+      - DEFOG_API_KEYS=${DEFOG_API_KEYS}
       - DEFOG_API_KEY_NAMES=${DEFOG_API_KEY_NAMES}
       - DEFOG_BASE_URL=${DEFOG_BASE_URL:-https://api.defog.ai}
       - DEFOG_GENERATE_URL=${DEFOG_GENERATE_URL:-https://api.defog.ai/generate_query_chat}
       - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
       - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
       - ANALYSIS_ASSETS_DIR=${ANALYSIS_ASSETS_DIR}
-      - DBNAME=${DEFOG_DBNAME:-postgres}
       - DBHOST=${DEFOG_DBHOST:-agents-postgres}
       - DBPORT=${DEFOG_DBPORT:-5432}
       - DATABASE=${DEFOG_DATABASE:-postgres}
       - DBUSER=${DEFOG_DBUSER:-postgres}
       - DBPASSWORD=${DEFOG_DBPASSWORD:-postgres}
+      - IMPORTED_TABLES_DBNAME=${IMPORTED_TABLES_DBNAME:-imported_tables}
       - REDIS_INTERNAL_PORT=${REDIS_INTERNAL_PORT}
       - PYTHONUNBUFFERED=${PYTHONUNBUFFERED}
       - LOG_LEVEL=${LOG_LEVEL:-info}
@@ -37,6 +53,15 @@ services:
       - INTERNAL_DB=${INTERNAL_DB:-postgres}
       - LLM_SERVER_ENDPOINT=${LLM_SERVER_ENDPOINT}
       - LLM_MODEL_NAME=${LLM_MODEL_NAME}
+      - STRIPE_ACCOUNT_ID=${STRIPE_ACCOUNT_ID}
+      - STRIPE_CLIENT_SECRET=${STRIPE_CLIENT_SECRET}
+      - GOOGLE_ANALYTICS_CREDS_PATH=${GOOGLE_ANALYTICS_CREDS_PATH}
+      - GOOGLE_ANALYTICS_PROPERTY_IDS=${GOOGLE_ANALYTICS_PROPERTY_IDS}
+      - RABBITMQ_HOST=${RABBITMQ_HOST}
+      - RABBITMQ_PORT=${RABBITMQ_PORT:-15672}
+
+
+      # Email configuration
       - EMAIL_OPTION=${EMAIL_OPTION:-DEFOG}
       - FROM_EMAIL=${FROM_EMAIL}
       - RESEND_API_KEY=${RESEND_API_KEY}
@@ -49,6 +74,7 @@ services:
     depends_on:
       - agents-postgres
       - agents-redis
+      - agents-rabbitmq
     networks:
       - agents-network
 
@@ -75,6 +101,7 @@ volumes:
   agents-postgres:
   agents-assets:
   agents-redis:
+  agents-rabbitmq:
 
 networks:
   agents-network:
