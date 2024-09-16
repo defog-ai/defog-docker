@@ -46,6 +46,10 @@ DEFOG_API_KEY_NAMES="Dataset 1,Dataset 2"
 
 ```bash
 # this assumes that we are in the defog-docker folder
+
+# first, make sure you have the latest version of the docker-compose.yaml and .env files
+git pull
+
 # first, we remove the current image and volumes
 docker compose rm -f
 
