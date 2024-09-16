@@ -16,8 +16,6 @@ services:
     image: rabbitmq:3-alpine
     networks:
       - agents-network
-    ports:
-      - "${RABBITMQ_PORT:-15672}:5672"
     volumes:
       - agents-rabbitmq:/var/lib/rabbitmq
     deploy:
