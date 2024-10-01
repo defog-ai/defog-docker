@@ -37,6 +37,7 @@ services:
       - INTERNAL_DB=${INTERNAL_DB:-postgres}
       - ANALYZE_DATA=${ANALYZE_DATA:-no}
       - ANALYZE_DATA_MODEL=${ANALYZE_DATA_MODEL:-defog}
+      - BEDROCK_MODEL=${BEDROCK_MODEL}
 
       # Email configuration
       - EMAIL_OPTION=${EMAIL_OPTION:-DEFOG}
