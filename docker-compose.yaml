@@ -13,7 +13,7 @@ services:
       - agents-network
 
   agents-python-server:
-    image: defogai/agents-python-server:latest
+    image: defogai/agents-python-server:experimental
     environment:
       - DEFOG_API_KEY=${DEFOG_API_KEY} # for backwards compatibility. avoid using DEFOG_API_KEY going forward due to potential conflicts with usage in defog-python
       - DEFOG_API_KEYS=${DEFOG_API_KEYS}
@@ -38,6 +38,9 @@ services:
       - ANALYZE_DATA=${ANALYZE_DATA:-no}
       - ANALYZE_DATA_MODEL=${ANALYZE_DATA_MODEL:-defog}
       - BEDROCK_MODEL=${BEDROCK_MODEL}
+      - IMPORTED_TABLES_DBNAME=${IMPORTED_TABLES_DBNAME:-imported_tables}
+      - RABBITMQ_HOST=${RABBITMQ_HOST:-agents-rabbitmq}
+      - ORACLE_ENABLED=yes
 
       # Email configuration
       - EMAIL_OPTION=${EMAIL_OPTION:-DEFOG}
@@ -66,7 +69,7 @@ services:
     stop_grace_period: 1s
 
   agents-nginx:
-    image: defogai/agents-nginx:latest
+    image: defogai/agents-nginx:experimental
     ports:
       - "80:80"
       - "443:443"
