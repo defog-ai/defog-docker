@@ -11,6 +11,18 @@ services:
       - agents-postgres:/var/lib/postgresql/data
     networks:
       - agents-network
+  
+  agents-rabbitmq:
+    image: rabbitmq:3-alpine
+    networks:
+      - agents-network
+    volumes:
+      - agents-rabbitmq:/var/lib/rabbitmq
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 512M
 
   agents-python-server:
     image: defogai/agents-python-server:experimental
@@ -64,6 +76,7 @@ services:
     depends_on:
       - agents-postgres
       - agents-redis
+      - agents-rabbitmq
     networks:
       - agents-network
     stop_grace_period: 1s
@@ -96,6 +109,7 @@ volumes:
   agents-postgres:
   agents-assets:
   agents-redis:
+  agents-rabbitmq:
 
 networks:
   agents-network:
